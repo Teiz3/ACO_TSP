@@ -14,7 +14,7 @@ Ant::Ant(int numCities, double alpha, double beta, double Q)
     this->beta = beta;                                  // Heuristic attraction strength
     this->Q = Q;                                        // Pheromone drop rate
     tour = {};                                          // empty vector of visisted cities
-    visited = std::vector<bool>(numCities, false);      // Vector where each city index inits to false
+    std::vector<bool> visited(numCities, false);        // Vector where each city index inits to false
     tourLength = 0.0;                                   
 }
 
@@ -29,6 +29,53 @@ void Ant::visitCity(int city, double distance) {
     tour.push_back(city);
     visited[city] = true;
     tourLength += distance;
+}
+
+int Ant::chooseNextCity(const std::vector<std::vector<double>>& pheromones,
+                        const std::vector<std::vector<double>>& heuristics)
+{
+    int current = getCity();
+
+    std::vector<double> probabilities(numCities, 0.0);
+    double sum = 0.0;
+
+    // Eq 3
+    for (int i = 0; i < numCities; i++) {
+        if (!visited[i]) {
+            double tau = std::pow(pheromones[current][i], alpha);
+            double eta = std::pow(heuristics[current][i], beta);
+            probabilities[i] = tau * eta;
+            sum += probabilities[i];
+        }
+    }
+
+    // // Normalize probabilities
+    //  for (int i = 0; i < numCities; i++) {
+    //     if (!visited[i]) {
+    //         probabilities[i] /= sum;
+    //     }
+    // }
+
+    // Roulette wheel selection, made by chatje
+    std::uniform_real_distribution<double> dist(0.0, sum);
+    double r = dist(rng);
+
+    double cumulative = 0.0;
+    for (int j = 0; j < numCities; j++) {
+        if (!visited[j]) {
+            cumulative += probabilities[j];
+            if (cumulative >= r) {
+                return j;
+            }
+        }
+    }
+
+    // Fallback
+    // for (int j = 0; j < numCities; j++)
+    //     if (!visited[j]) return j;
+
+    // Error 
+    return -1;
 }
 
 // Getter for visited flahs

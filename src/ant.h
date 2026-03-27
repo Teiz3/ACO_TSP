@@ -8,6 +8,8 @@ class Ant {
         // Main functions
         void startAt(int city);
         void visitCity(int city, double distance);
+        int chooseNextCity(const std::vector<std::vector<double>>& pheromone,
+                        const std::vector<std::vector<double>>& heuristic);
 
         // Getters
         bool hasVisited(int city) const;
