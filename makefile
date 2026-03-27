@@ -1,7 +1,14 @@
 CXX = g++
 CXXFLAGS_COMMON = -std=c++17 -Wall -Wpedantic -Wextra -fexceptions -fopenmp
 
-CXXFLAGS = $(CXXFLAGS_COMMON) -O3 -march=native -flto -mavx2 -DNDEBUG
+# Change to debug to compile with debugging flags
+MODE = debug
+
+ifeq ($(MODE),release)
+	CXXFLAGS = $(CXXFLAGS_COMMON) -O3 -march=native -flto -mavx2 -DNDEBUG
+else
+	CXXFLAGS = $(CXXFLAGS_COMMON) -g
+endif
 
 TARGET = aco
 
@@ -9,7 +16,7 @@ BUILDDIR = build
 
 SRCDIR = src
 
-SOURCES = aco.cpp problem_instance.cpp pheromone.cpp
+SOURCES = aco.cpp problem_instance.cpp ant.cpp
 
 OBJS = $(SOURCES:.cpp=.o)
 

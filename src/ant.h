@@ -1,4 +1,6 @@
 #include <vector>
+#include "pheromone.h"
+#include "problem_instance.h"
 
 class Ant {
     public:
@@ -8,8 +10,8 @@ class Ant {
         // Main functions
         void startAt(int city);
         void visitCity(int city, double distance);
-        int chooseNextCity(const std::vector<std::vector<double>>& pheromone,
-                        const std::vector<std::vector<double>>& heuristic);
+        int chooseNextCity(const PheromoneMatrix& pheromone,
+                        const ProblemInstance& heuristic);
 
         // Getters
         bool hasVisited(int city) const;

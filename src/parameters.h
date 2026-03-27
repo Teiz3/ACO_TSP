@@ -22,7 +22,8 @@ const double alpha = 1;
 
 // beta, the influence of distance
 // Paper has as default 2
-const double beta = 2;
+// beta already means something in c++, therefore beta_param
+const double beta_param = 2;
 
 // rho, the evaporation rate
 // Paper has as default 0.5

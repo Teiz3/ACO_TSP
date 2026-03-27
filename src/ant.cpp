@@ -1,4 +1,4 @@
-#include "Ant.h"
+#include "ant.h"
 #include <cmath>
 #include <limits>
 #include <numeric>
@@ -7,16 +7,14 @@
 static std::mt19937 rng(std::random_device{}());
 
 // Ant constructor
-Ant::Ant(int numCities, double alpha, double beta, double Q) 
-{
-    this->numCities = numCities;  
-    this->alpha = alpha;                                // Pheremone attraction stregthn
-    this->beta = beta;                                  // Heuristic attraction strength
-    this->Q = Q;                                        // Pheromone drop rate
-    tour = {};                                          // empty vector of visisted cities
-    std::vector<bool> visited(numCities, false);        // Vector where each city index inits to false
-    tourLength = 0.0;                                   
-}
+Ant::Ant(int numCities, double alpha, double beta, double Q) :
+    numCities(numCities),           // Pheremone attraction stregthn
+    alpha(alpha),                   // Heuristic attraction strength
+    beta(beta),                     // Pheromone drop rate
+    Q(Q),                           // empty vector of visisted cities
+    tour(),                         // Vector where each city index inits to false
+    visited(numCities, false),
+    tourLength(0) {}
 
 // Initializes an ant at a city
 void Ant::startAt(int city) {
@@ -31,8 +29,8 @@ void Ant::visitCity(int city, double distance) {
     tourLength += distance;
 }
 
-int Ant::chooseNextCity(const std::vector<std::vector<double>>& pheromones,
-                        const std::vector<std::vector<double>>& heuristics)
+int Ant::chooseNextCity(const PheromoneMatrix& pheromones,
+                        const ProblemInstance& heuristics)
 {
     int current = getCity();
 
@@ -42,8 +40,8 @@ int Ant::chooseNextCity(const std::vector<std::vector<double>>& pheromones,
     // Eq 3
     for (int i = 0; i < numCities; i++) {
         if (!visited[i]) {
-            double tau = std::pow(pheromones[current][i], alpha);
-            double eta = std::pow(heuristics[current][i], beta);
+            double tau = std::pow(pheromones.get_pheromone(current, i), alpha);
+            double eta = std::pow(heuristics.get_distance(current, i), beta);
             probabilities[i] = tau * eta;
             sum += probabilities[i];
         }
