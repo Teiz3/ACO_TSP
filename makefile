@@ -9,7 +9,7 @@ BUILDDIR = build
 
 SRCDIR = src
 
-SOURCES = aco.cpp problem_instance.cpp
+SOURCES = aco.cpp problem_instance.cpp pheromone.cpp
 
 OBJS = $(SOURCES:.cpp=.o)
 

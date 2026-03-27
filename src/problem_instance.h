@@ -8,6 +8,7 @@
 #include "utils.h"
 #include <string>
 #include <assert.h>
+#include <iostream>
 
 #pragma once
 
@@ -96,6 +97,7 @@ struct ProblemInstance {
                 mat[i * size_ + j] = get_distance(i, j);
             }
         } 
+        distance_matrix_ = mat;
     }
 
     double get_distance(uint32_t from, uint32_t to) const {
@@ -122,6 +124,15 @@ struct ProblemInstance {
         // else edge_weight_type_ == EXPLICIT
         assert(!distance_matrix_.empty());
         return 0;
+    }
+
+    void printDistances() const {
+        for(uint32_t i = 0; i < size_; i++){
+            for(uint32_t j = 0; j < size_; j++){
+                cout << get_distance(i, j) << " ";
+            }
+            cout << "\n";
+        } 
     }
 
 };
