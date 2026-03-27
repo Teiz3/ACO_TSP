@@ -1,17 +1,30 @@
-// Very much still WIP
-
 #include <vector>
-#include <cstdint>
-#include <assert.h>
 
-class Ant{
+class Ant {
     public:
-        std::vector<uint32_t> visited;
+        // Constructor
+        Ant(int numCities, double alpha, double beta, double Q);
 
-        void visitNode(uint32_t node);
+        // Main functions
+        void startAt(int city);
+        void visitCity(int city, double distance);
 
-        Ant(double a, double b) : _alpha(a), _beta(b) {};
+        // Getters
+        bool hasVisited(int city) const;
+        double getTourLength() const;
+        int getCity() const;
+        const std::vector<int>& getTour() const;
+        
+        // Reset
+        void reset();
+
     private:
-        double _alpha;
-        double _beta;
+        // Member vars
+        int numCities;
+        double alpha;
+        double beta;
+        double Q;
+        std::vector<int> tour;          // tabu list
+        std::vector<bool> visited;      // visited flags
+        double tourLength;
 };

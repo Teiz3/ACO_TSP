@@ -2,6 +2,8 @@
  * problem_instance.h
  * ProblemInstance class contains the TSP input and node information
  */
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 #include <cstdint>
 #include <vector>
