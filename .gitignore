@@ -3,3 +3,4 @@ results/*
 aco
 aco.exe
 .vscode/*
+.vs/*
