@@ -1,13 +1,14 @@
 CXX = g++
 CXXFLAGS_COMMON = -std=c++17 -Wall -Wpedantic -Wextra -fexceptions -fopenmp
+SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 # Change to debug to compile with debugging flags
 MODE = debug
 
 ifeq ($(MODE),release)
-	CXXFLAGS = $(CXXFLAGS_COMMON) -O3 -march=native -flto -mavx2 -DNDEBUG
+	CXXFLAGS = $(CXXFLAGS_COMMON) $(SFMLFLAGS) -O3 -march=native -flto -mavx2 -DNDEBUG
 else
-	CXXFLAGS = $(CXXFLAGS_COMMON) -g
+	CXXFLAGS = $(CXXFLAGS_COMMON) $(SFMLFLAGS) -g
 endif
 
 TARGET = aco
@@ -16,7 +17,7 @@ BUILDDIR = build
 
 SRCDIR = src
 
-SOURCES = aco.cpp problem_instance.cpp ant.cpp
+SOURCES = aco.cpp problem_instance.cpp ant.cpp visualizer.cpp
 
 OBJS = $(SOURCES:.cpp=.o)
 

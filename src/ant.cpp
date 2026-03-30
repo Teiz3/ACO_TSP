@@ -14,6 +14,7 @@ Ant::Ant(int numCities, double alpha, double beta, double Q) :
     Q(Q),                           // empty vector of visisted cities
     tour(),                         // Vector where each city index inits to false
     visited(numCities, false),
+    visited_count(0),
     tourLength(0) {}
 
 // Initializes an ant at a city
@@ -26,6 +27,7 @@ void Ant::startAt(int city) {
 void Ant::visitCity(int city, double distance) {
     tour.push_back(city);
     visited[city] = true;
+    visited_count++;
     tourLength += distance;
 }
 
@@ -40,8 +42,9 @@ int Ant::chooseNextCity(const PheromoneMatrix& pheromones,
     // Eq 3
     for (int i = 0; i < numCities; i++) {
         if (!visited[i]) {
+            double eta = (1 / heuristics.get_distance(current, i));
             double tau = std::pow(pheromones.get_pheromone(current, i), alpha);
-            double eta = std::pow(heuristics.get_distance(current, i), beta);
+            eta = std::pow(eta, beta);
             probabilities[i] = tau * eta;
             sum += probabilities[i];
         }
@@ -76,6 +79,18 @@ int Ant::chooseNextCity(const PheromoneMatrix& pheromones,
     return -1;
 }
 
+double Ant::makePath(const PheromoneMatrix& pheromone, const ProblemInstance& heuristic){
+    
+    while (visited_count < heuristic.size_){
+        int next = chooseNextCity(pheromone, heuristic);
+        assert(!hasVisited(next));
+        double dist = heuristic.get_distance(next, getCity());
+        visitCity(next, dist);
+    }
+
+    return getTourLength();
+}
+
 // Getter for visited flahs
 bool Ant::hasVisited(int city) const {
     return visited[city];
@@ -100,5 +115,6 @@ const std::vector<int>& Ant::getTour() const {
 void Ant::reset() {
     tour.clear();
     std::fill(visited.begin(), visited.end(), false);
+    visited_count = 0;
     tourLength = 0.0;
 }

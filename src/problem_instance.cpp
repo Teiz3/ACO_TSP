@@ -60,7 +60,7 @@ ProblemInstance load_tsplib_instance(const char* path){
     cout << "Loading TSP instance from file: " << path << "\n";
 
     while (getline(in, line)){
-        cout << '\t' << line << endl;
+        // cout << '\t' << line << endl;
         switch (getField(line)){
             case Field::NAME: {   
                 name = line.substr(line.find(':'));

@@ -12,6 +12,9 @@ class Ant {
         void visitCity(int city, double distance);
         int chooseNextCity(const PheromoneMatrix& pheromone,
                         const ProblemInstance& heuristic);
+        // Make a whole tour and return the pathlength
+        double makePath(const PheromoneMatrix& pheromone,
+                        const ProblemInstance& heuristic);
 
         // Getters
         bool hasVisited(int city) const;
@@ -30,5 +33,6 @@ class Ant {
         double Q;
         std::vector<int> tour;          // tabu list
         std::vector<bool> visited;      // visited flags
+        uint32_t visited_count;
         double tourLength;
 };
