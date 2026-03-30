@@ -38,6 +38,7 @@ struct PheromoneMatrix{
         double amount = Q_ / tourLength;
         for (size_t j = 1; j < tour.size(); j++){
             add_pheromone(tour[i], tour[j], amount);
+            i = j;
         }
     }
 
