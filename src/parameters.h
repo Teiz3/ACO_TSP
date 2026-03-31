@@ -3,33 +3,52 @@
  * Contains all the parameters used in the algorithm
  */
 #include <cstdint>
+#pragma once
 
 // Number of ants
 // In paper called 'm'
 // Paper has default value: m=n
 // num_ants is only used if num_ants_equals_num_cities is false
-const uint32_t num_ants = 10;
-const bool num_ants_equals_num_cities = true;
+const uint32_t default_num_ants = 10;
+const bool default_num_ants_equals_num_cities = true;
 
 // Initial pheremone value
 // In paper called 'c' or tau_0
 // Paper has default value: 1
-const double initial_pheromone = 1;
+const double default_initial_pheromone = 1;
 
 // alpha, the influence of pheromones
 // Paper has as default 1
-const double alpha = 1;
+const double default_alpha = 1;
 
 // beta, the influence of distance
 // Paper has as default 2
-// beta already means something in c++, therefore beta_param
-const double beta_param = 2;
+const double default_beta = 2;
 
 // rho, the evaporation rate
 // Paper has as default 0.5
-const double rho = 0.5;
+const double default_rho = 0.5;
 
 // Quantity of pheromone laid
 // Paper has as default 100
-const double Q = 100;
+const double default_Q = 100;
 
+struct Config{
+    const uint32_t num_ants;
+    const bool num_ants_equals_num_cities;
+    const double initial_pheromone;
+    const double alpha;
+    const double beta;
+    const double rho;
+    const double Q;
+};
+
+inline Config defaultConfig = {
+    default_num_ants,
+    default_num_ants_equals_num_cities,
+    default_initial_pheromone,
+    default_alpha,
+    default_beta,
+    default_rho,
+    default_Q,
+};

@@ -2,6 +2,8 @@
 #include "pheromone.h"
 #include "problem_instance.h"
 
+#pragma once
+
 class Ant {
     public:
         // Constructor

@@ -11,17 +11,19 @@ else
 	CXXFLAGS = $(CXXFLAGS_COMMON) $(SFMLFLAGS) -g
 endif
 
+CXXFLAGS += -MMD -MP
+-include $(OUT_OBJS:.o=.d)
+
 TARGET = aco
 
 BUILDDIR = build
 
 SRCDIR = src
 
-SOURCES = aco.cpp problem_instance.cpp ant.cpp visualizer.cpp
+SOURCES := $(wildcard $(SRCDIR)/*.cpp) \
+           $(wildcard $(SRCDIR)/*/*.cpp)
 
-OBJS = $(SOURCES:.cpp=.o)
-
-OUT_OBJS = $(addprefix $(BUILDDIR)/,$(OBJS))
+OUT_OBJS := $(patsubst $(SRCDIR)/%.cpp,$(BUILDDIR)/%.o,$(SOURCES))
 
 .PHONY: clean all
 
@@ -32,7 +34,7 @@ $(TARGET): $(OUT_OBJS)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	@mkdir -p results
-	@mkdir -p $(BUILDDIR)
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:

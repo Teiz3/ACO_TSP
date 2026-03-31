@@ -63,7 +63,7 @@ ProblemInstance load_tsplib_instance(const char* path){
         // cout << '\t' << line << endl;
         switch (getField(line)){
             case Field::NAME: {   
-                name = line.substr(line.find(':'));
+                name = line.substr(line.find(':') + 1);
                 trim(name);
                 break;
             }
