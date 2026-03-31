@@ -12,15 +12,24 @@ struct PheromoneMatrix{
     vector<double> pheremone_matrix_;
     double rho_;
     double Q_;
+    double initial_val_;
 
     PheromoneMatrix(uint32_t size, double initial_val, double rho, double Q) : 
-        size_(size), rho_(rho), Q_(Q) {
+        size_(size), rho_(rho), Q_(Q), initial_val_(initial_val) {
         pheremone_matrix_ = vector<double>(size_ * size_, initial_val);  
     };
 
+    void reset(){
+        pheremone_matrix_ = vector<double>(size_ * size_, initial_val_);
+    }
+
     double get_pheromone(uint32_t from, uint32_t to) const {
         assert((from < size_) && (to < size_));
-        return pheremone_matrix_[from * size_ + to];
+        // Ensure pheremones are always read and updated the same way
+        // In this case from is always the lower number
+        uint32_t f = min(from, to);
+        uint32_t t = max(from, to);
+        return pheremone_matrix_[f * size_ + t];
     }
 
     void evaporate(){
@@ -30,7 +39,11 @@ struct PheromoneMatrix{
     }
 
     void add_pheromone(uint32_t from, uint32_t to, double amount){
-        pheremone_matrix_[from * size_ + to] += amount;
+        // Ensure pheremones are always read and updated the same way
+        // In this case from is always the lower number
+        uint32_t f = min(from, to);
+        uint32_t t = max(from, to);
+        pheremone_matrix_[f * size_ + t] += amount;
     }
 
     void deposit(vector<int> tour, double tourLength){

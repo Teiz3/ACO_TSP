@@ -1,6 +1,7 @@
 #include "ant_system.h"
 
 double AntSystem::runAlgo(){
+    pheromones.reset();
     double bestPath = 1e20;
     uint8_t noChangeCount = 0;
 

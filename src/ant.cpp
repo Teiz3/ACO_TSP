@@ -21,6 +21,7 @@ Ant::Ant(int numCities, double alpha, double beta, double Q) :
 void Ant::startAt(int city) {
     reset();
     visitCity(city, 0.0);
+    startCity = city;
 }
 
 // Ant visit a city
@@ -50,13 +51,6 @@ int Ant::chooseNextCity(const PheromoneMatrix& pheromones,
         }
     }
 
-    // // Normalize probabilities
-    //  for (int i = 0; i < numCities; i++) {
-    //     if (!visited[i]) {
-    //         probabilities[i] /= sum;
-    //     }
-    // }
-
     // Roulette wheel selection, made by chatje
     std::uniform_real_distribution<double> dist(0.0, sum);
     double r = dist(rng);
@@ -70,12 +64,6 @@ int Ant::chooseNextCity(const PheromoneMatrix& pheromones,
             }
         }
     }
-
-    // Fallback
-    // for (int j = 0; j < numCities; j++)
-    //     if (!visited[j]) return j;
-
-    // Error 
     return -1;
 }
 
@@ -84,9 +72,11 @@ double Ant::makePath(const PheromoneMatrix& pheromone, const ProblemInstance& he
     while (visited_count < heuristic.size_){
         int next = chooseNextCity(pheromone, heuristic);
         assert(!hasVisited(next));
-        double dist = heuristic.get_distance(next, getCity());
+        double dist = heuristic.get_distance(getCity(), next);
         visitCity(next, dist);
     }
+    // Complete tour by going back to the original city
+    visitCity(startCity, heuristic.get_distance(getCity(), startCity));
 
     return getTourLength();
 }

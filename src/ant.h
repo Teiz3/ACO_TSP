@@ -37,4 +37,5 @@ class Ant {
         std::vector<bool> visited;      // visited flags
         uint32_t visited_count;
         double tourLength;
+        int startCity;
 };
