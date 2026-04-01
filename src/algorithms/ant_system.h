@@ -6,17 +6,21 @@
 #include "../pheromone.h"
 #include "../parameters.h"
 #include "../ant.h"
+#include "../utils/stats.h"
 #include <vector>
 #include <iostream>
 #include <random>
 
+#pragma once
+
 class AntSystem{
     public:
-        AntSystem(ProblemInstance &problem, Config &cfg) : 
+        AntSystem(ProblemInstance &problem, Config &cfg, Stats &stats) : 
             problem(problem),
             pheromones(PheromoneMatrix(problem.size_, cfg.initial_pheromone, cfg.rho, cfg.Q)),
             cfg(cfg),
-            ants() {
+            ants(),
+            stats(stats){
                 num_ants = cfg.num_ants_equals_num_cities ? problem.size_ : cfg.num_ants;
                 ants.reserve(num_ants);
                 for (uint32_t i = 0; i < num_ants; ++i){
@@ -38,4 +42,5 @@ class AntSystem{
         Config cfg;
         vector<Ant> ants;
         uint32_t num_ants;
+        Stats &stats;
 };

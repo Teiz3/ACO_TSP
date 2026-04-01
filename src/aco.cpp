@@ -18,13 +18,15 @@ int main() {
     ProblemInstance problem = load_tsplib_instance("problems/att48.tsp");
     // ProblemInstance problem = load_tsplib_instance("problems/fri26.tsp");
    
-    Stats stats;
+    Stats stats = Stats(problem);
 
-    AntSystem AS = AntSystem(problem, defaultConfig);
+    AntSystem AS = AntSystem(problem, defaultConfig, stats);
     AS.printDebugInfo();
-    for(uint16_t i = 0; i < 30; ++i){
-        cout << "Best solution found with Ant System: " << AS.runAlgo() << "\n";
+    for(uint16_t i = 0; i < 100; ++i){
+        AS.runAlgo();
+        // cout << "Best solution found with Ant System: " << AS.runAlgo() << "\n";
     }
+    stats.printAlgoResults();
 
     return 0;
 }

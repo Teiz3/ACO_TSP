@@ -1,11 +1,13 @@
 #include "ant_system.h"
 
 double AntSystem::runAlgo(){
+    stats.startRun();
     pheromones.reset();
     double bestPath = 1e20;
     uint8_t noChangeCount = 0;
 
-    while (noChangeCount < 1){
+    while (noChangeCount < 10){
+        stats.iterate();
         double path = stepAlgo();
         if (path < bestPath){
             bestPath = path;
@@ -14,6 +16,7 @@ double AntSystem::runAlgo(){
             noChangeCount++;
         }
     }
+    stats.stopRun(bestPath);
     return bestPath;
 }
 
@@ -42,12 +45,12 @@ double AntSystem::stepAlgo(){
 }
 
 void AntSystem::printDebugInfo(){
-    cout << "\n\tAnt System instance\n";
-    cout << "=========================================\n";
+    cout << "\n\t\tAnt System instance\n";
+    cout << "================================================\n";
     cout << "PROBLEM: " << problem.name_ << "\tSIZE: " << problem.size_ << "\n";
     cout << "OPTIMAL SOLUTION: " << problem.optimal_path_length_ << "\n";
     cout << "PHEROMONES SIZE: " << pheromones.size_ << "\tQ: " << pheromones.Q_
     << "\tRHO: " << pheromones.rho_;
     cout << "\nNUM ANTS: " << ants.size() << "\n";
-    cout << "=========================================\n\n";
+    cout << "================================================\n\n";
 }
