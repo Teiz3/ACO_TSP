@@ -38,6 +38,17 @@ static inline void trim(std::string &s) {
     rtrim(s);
 }
 
+using json = nlohmann::json;
+
+void ProblemInstance::load_optimal_solution(){
+    std::ifstream in("problems/solutions.json");
+    json solutions = json::parse(in);
+    auto solution = solutions.find(name_);
+    if (solution != solutions.end()){
+        optimal_path_length_ = solution.value().get<double>();
+    }
+}
+
 ProblemInstance load_tsplib_instance(const char* path){
     using namespace std;
     enum EdgeWeightFormat { UPPER_DIAG_ROW, LOWER_DIAG_ROW, UPPER_ROW, FUNCTION };

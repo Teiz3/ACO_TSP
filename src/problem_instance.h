@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <vector>
 #include "utils.h"
+#include "json.hpp"
 #include <string>
 #include <assert.h>
 #include <iostream>
@@ -100,7 +101,11 @@ struct ProblemInstance {
             }
         } 
         distance_matrix_ = mat;
+        // Load optimal solution
+        load_optimal_solution();
     }
+
+    void load_optimal_solution();
 
     double get_distance(uint32_t from, uint32_t to) const {
         assert((from < size_) && (to < size_));
