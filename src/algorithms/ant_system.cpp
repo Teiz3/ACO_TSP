@@ -5,7 +5,7 @@ double AntSystem::runAlgo(){
     double bestPath = 1e20;
     uint8_t noChangeCount = 0;
 
-    while (noChangeCount < 10){
+    while (noChangeCount < 1){
         double path = stepAlgo();
         if (path < bestPath){
             bestPath = path;

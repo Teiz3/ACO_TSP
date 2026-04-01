@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <vector>
 #include "utils.h"
-#include "problem_instance.h"
+#include "../problem_instance.h"
 
 #pragma once
 

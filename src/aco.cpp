@@ -3,7 +3,8 @@
 #include "pheromone.h"
 #include "ant.h"
 #include "algorithms/ant_system.h"
-#include "visualizer.h"
+#include "utils/visualizer.h"
+#include "utils/stats.h"
 #include <iostream>
 #include <random>
 #include <fstream>
@@ -17,6 +18,8 @@ int main() {
     ProblemInstance problem = load_tsplib_instance("problems/att48.tsp");
     // ProblemInstance problem = load_tsplib_instance("problems/fri26.tsp");
    
+    Stats stats;
+
     AntSystem AS = AntSystem(problem, defaultConfig);
     AS.printDebugInfo();
     for(uint16_t i = 0; i < 30; ++i){

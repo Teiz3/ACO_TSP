@@ -7,8 +7,8 @@
 
 #include <cstdint>
 #include <vector>
-#include "utils.h"
-#include "json.hpp"
+#include "utils/utils.h"
+#include "utils/json.hpp"
 #include <string>
 #include <assert.h>
 #include <iostream>
