@@ -15,10 +15,10 @@
 
 class MeetingAnts{
     public:
-        MeetingAnts(ProblemInstance &problem, Config &cfg, Stats &stats) : 
+        MeetingAnts(ProblemInstance &problem, MeetingConfig &cfg, Stats &stats) : 
             problem(problem),
             pheromones(PheromoneMatrix(problem.size_, cfg.initial_pheromone, cfg.rho, cfg.Q)),
-            cfg(cfg),
+            config(cfg),
             ants(),
             stats(stats){
                 num_ants = cfg.num_ants_equals_num_cities ? problem.size_ : cfg.num_ants;
@@ -41,7 +41,7 @@ class MeetingAnts{
     private:
         ProblemInstance problem;
         PheromoneMatrix pheromones;
-        Config config;
+        MeetingConfig config;
         vector<Ant> ants;
         uint32_t num_ants;
         Stats &stats;

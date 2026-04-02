@@ -8,12 +8,12 @@ static std::mt19937 rng(std::random_device{}());
 
 // Ant constructor
 Ant::Ant(int numCities, double alpha, double beta, double Q) :
-    numCities(numCities),           // Pheremone attraction stregthn
-    alpha(alpha),                   // Heuristic attraction strength
-    beta(beta),                     // Pheromone drop rate
-    Q(Q),                           // empty vector of visisted cities
-    tour(),                         // Vector where each city index inits to false
-    visited(numCities, false),
+    numCities(numCities),           
+    alpha(alpha),                   // Pheremone attraction stregthn
+    beta(beta),                     // Heuristic attraction strength
+    Q(Q),                           // Pheromone drop rate
+    tour(),                         // empty vector of visisted cities
+    visited(numCities, false),      // Vector where each city index inits to false
     visited_count(0),
     tourLength(0) {}
 

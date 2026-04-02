@@ -59,3 +59,13 @@ struct MeetingConfig : public Config{
     const double pheromone_min = 0.00001;   // tmin
     const double pheromone_max = 1e20;      // tmax
 };
+
+inline MeetingConfig defaultMeetConfig = {
+    default_num_ants,
+    default_num_ants_equals_num_cities,
+    default_initial_pheromone,
+    default_alpha,
+    default_beta,
+    default_rho,
+    default_Q,
+};

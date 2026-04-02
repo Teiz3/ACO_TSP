@@ -3,6 +3,7 @@
 #include "pheromone.h"
 #include "ant.h"
 #include "algorithms/ant_system.h"
+#include "algorithms/meeting_ants.h"
 #include "utils/visualizer.h"
 #include "utils/stats.h"
 #include <iostream>
@@ -21,9 +22,11 @@ int main() {
     Stats stats = Stats(problem);
 
     AntSystem AS = AntSystem(problem, defaultConfig, stats);
-    AS.printDebugInfo();
+    MeetingAnts MA = MeetingAnts(problem, defaultMeetConfig, stats);
+    // AS.printDebugInfo();
     for(uint16_t i = 0; i < 100; ++i){
-        AS.runAlgo();
+        // AS.runAlgo(); 
+        MA.runAlgo(); 
         // cout << "Best solution found with Ant System: " << AS.runAlgo() << "\n";
     }
     stats.printAlgoResults();
