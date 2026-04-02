@@ -52,3 +52,10 @@ inline Config defaultConfig = {
     default_rho,
     default_Q,
 };
+
+struct MeetingConfig : public Config{
+    const bool use_meeting_strategy = false;
+    const int32_t meeting_threshold = 1;    // v 
+    const double pheromone_min = 0.00001;   // tmin
+    const double pheromone_max = 1e20;      // tmax
+};

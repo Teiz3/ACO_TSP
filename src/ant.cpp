@@ -101,10 +101,31 @@ const std::vector<int>& Ant::getTour() const {
     return tour;
 }
 
+uint32_t Ant::getVisitedCount() const {
+    return visited_count;
+}
+
+
 // Resets 1 ant
 void Ant::reset() {
     tour.clear();
     std::fill(visited.begin(), visited.end(), false);
     visited_count = 0;
     tourLength = 0.0;
+}
+
+double Ant::computeTourLength(const std::vector<int>& tour,
+                              const ProblemInstance& problem) const
+{
+    if (tour.empty()) return 0.0;
+
+    double length = 0.0;
+
+    for (size_t i = 0; i < tour.size() - 1; ++i) {
+        length += problem.get_distance(tour[i], tour[i + 1]);
+    }
+
+    length += problem.get_distance(tour.back(), tour.front());
+
+    return length;
 }

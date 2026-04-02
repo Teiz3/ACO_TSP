@@ -14,6 +14,11 @@ struct PheromoneMatrix{
     double Q_;
     double initial_val_;
 
+    // Meeting algo
+    double tmin_ = 0;
+    double tmax_ = 20;
+    bool bound_enabled_ = false;
+
     PheromoneMatrix(uint32_t size, double initial_val, double rho, double Q) : 
         size_(size), rho_(rho), Q_(Q), initial_val_(initial_val) {
         pheremone_matrix_ = vector<double>(size_ * size_, initial_val);  
@@ -63,4 +68,26 @@ struct PheromoneMatrix{
             cout << "\n";
         } 
     }
+
+    void bound(){
+        if(!bound_enabled_) return;
+
+        for(double &tau : pheremone_matrix_){
+            if
+                (tau < tmin_) tau = tmin_;
+            else if
+                (tau > tmax_) tau = tmax_;
+        }
+    }
+
+    void enableBound(double tmin, double tmax){
+        bound_enabled_ = true;
+        tmin_ = tmin;
+        tmax_ = tmax;
+    }
+
+    void disableBound(){
+        bound_enabled_ = false;
+    }
+
 };
