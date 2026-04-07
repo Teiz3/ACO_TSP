@@ -7,7 +7,10 @@ double MeetingAnts::runAlgo(){
     double bestPath = 1e20;
     uint8_t noChangeCount = 0;
 
-    while (noChangeCount < 10){
+    // while (noChangeCount < 10){
+    int i = 0;
+    while (i < 2000){
+        ++i;
         stats.iterate();
         double path = stepAlgo();
         if (path < bestPath){
@@ -48,6 +51,7 @@ double MeetingAnts::stepAlgo(){
 
     if(config.use_meeting_strategy){
         mergedTours = meetingPhase();
+        stats.logNrOfMerges(mergedTours.size());
         if(mergedTours.size() >= config.meeting_threshold)
             stopEarly = true;
     }

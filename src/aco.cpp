@@ -24,11 +24,14 @@ int main() {
     AntSystem AS = AntSystem(problem, defaultConfig, stats);
     MeetingAnts MA = MeetingAnts(problem, defaultMeetConfig, stats);
     // AS.printDebugInfo();
-    for(uint16_t i = 0; i < 100; ++i){
+    int runs = 100;
+    for(uint16_t i = 0; i < runs; ++i){
         // AS.runAlgo(); 
+        cout << "\r" << "Run " << i << "/" << runs << flush;
         MA.runAlgo(); 
         // cout << "Best solution found with Ant System: " << AS.runAlgo() << "\n";
     }
+    cout << "\n";
     stats.printAlgoResults();
 
     return 0;

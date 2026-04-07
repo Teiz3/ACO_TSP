@@ -45,6 +45,12 @@ class Stats{
         void iterate();
 
         /**
+         * @brief Store the number of merges in Merging Ant algorithm.
+         * @param merge_count The number of merges in that iteration.
+         */
+        void logNrOfMerges(uint32_t merge_count);
+
+        /**
          * @brief Print a full report on all stored runs.
          */
         void printAlgoResults();
@@ -61,6 +67,9 @@ class Stats{
 
         // Run results
         vector<double> path_lengths = vector<double>();
+
+        // Merging ant specific stats
+        vector<uint32_t> num_merges = vector<uint32_t>();
 
         // Algorithm parameters and other metadata
         ProblemInstance &problem;

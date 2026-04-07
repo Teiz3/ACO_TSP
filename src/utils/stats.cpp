@@ -4,6 +4,7 @@ void Stats::startRun(){
     if(currentRun == -1) batch_start = chrono::steady_clock::now();
     ++currentRun;
     iteration_counts.push_back(0);
+    num_merges.push_back(0);
     // Start run timer
     run_start = chrono::steady_clock::now();
 }
@@ -23,6 +24,10 @@ void Stats::iterate(){
 
 void Stats::printRunInfo(){
     printRunInfo(currentRun);
+}
+
+void Stats::logNrOfMerges(uint32_t merge_count){
+    num_merges[currentRun] += merge_count;
 }
 
 void Stats::printRunInfo(int runId){
@@ -81,4 +86,10 @@ void Stats::printAlgoResults(){
     
     cout << "\nRuntime: " << batch_duration.count() << "[ms]\n";
     cout << "Average runtime per run: " << avrT << "[ms]\n";
+
+    cout << "Number of merges each run:\n";
+    for(int i = 0; i < currentRun; ++i){
+        cout << num_merges.at(i) << " ";
+    }
+    cout << "\n";
 }

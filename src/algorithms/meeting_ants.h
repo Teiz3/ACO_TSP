@@ -2,6 +2,7 @@
  * ant_system.h
  * The original ACO algorithm: Ant System
  */
+#include "base.h"
 #include "../problem_instance.h"
 #include "../pheromone.h"
 #include "../parameters.h"
