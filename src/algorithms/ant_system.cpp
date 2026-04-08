@@ -1,14 +1,14 @@
 #include "ant_system.h"
 
 double AntSystem::runAlgo(){
-    stats.startRun();
-    pheromones.reset();
+    startRun();
     double bestPath = 1e20;
     uint8_t noChangeCount = 0;
 
     while (noChangeCount < 10){
         stats.iterate();
-        double path = stepAlgo();
+        uint32_t idx = stepAlgo();
+        double path = ants[idx].getTourLength();
         if (path < bestPath){
             bestPath = path;
             noChangeCount = 0;
@@ -16,11 +16,11 @@ double AntSystem::runAlgo(){
             noChangeCount++;
         }
     }
-    stats.stopRun(bestPath);
+    stopRun(bestPath);
     return bestPath;
 }
 
-double AntSystem::stepAlgo(){
+uint32_t AntSystem::stepAlgo(){
     // Spawn each ant in a random city
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -31,9 +31,13 @@ double AntSystem::stepAlgo(){
 
     // Let each ant find a path
     double bestPath = 1e20;
+    uint32_t bestAntIdx = 0;
     for(uint32_t i = 0; i < num_ants; ++i){
         double path = ants[i].makePath(pheromones, problem);
-        bestPath = min(bestPath, path);
+        if(path < bestPath){
+            bestPath = path;
+            bestAntIdx = i;
+        }
     }
 
     // Update pheromones
@@ -41,5 +45,5 @@ double AntSystem::stepAlgo(){
     for(uint32_t i = 0; i < num_ants; ++i){
         pheromones.deposit(ants[i].getTour(), ants[i].getTourLength());
     }
-    return bestPath;
+    return bestAntIdx;
 }

@@ -84,7 +84,7 @@ void Stats::printAlgoResults(){
          << "\nWorst:\t\t" << *minmaxIt.second
          << "\nAverage\t\t" << avrIt << "\n";
     
-    cout << "\nRuntime: " << batch_duration.count() << "[ms]\n";
+    cout << "\nRuntime: " << (batch_duration.count() / 1000.0) << "[s]\n";
     cout << "Average runtime per run: " << avrT << "[ms]\n";
 
     cout << "Number of merges each run:\n";

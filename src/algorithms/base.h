@@ -7,7 +7,9 @@
 #include "../parameters.h"
 #include "../ant.h"
 #include "../utils/stats.h"
+#include "../utils/visualizer.h"
 #include <vector>
+#include <thread>
 
 class Algorithm{
     protected:
@@ -26,7 +28,8 @@ class Algorithm{
             pheromones(PheromoneMatrix(problem.size_, cfg.initial_pheromone, cfg.rho, cfg.Q)),
             cfg(cfg),
             ants(),
-            stats(stats) {
+            stats(stats),
+            visualizer(Visualizer(1280, 720, name)) {
                 num_ants = cfg.num_ants_equals_num_cities ? problem.size_ : cfg.num_ants;
                 ants.reserve(num_ants);
                 for(size_t i = 0; i < num_ants; ++i){
@@ -34,9 +37,32 @@ class Algorithm{
                 }
             };
         
+        /**
+         * @brief Runs a single full run of the algorithm.
+         * @note This function calls startRun(), so it is not needed to call yourself.
+         */
         virtual double runAlgo() = 0;
-        virtual double stepAlgo() = 0;
+
+        /**
+         * @brief Runs a single iteration (each ant makes only one path).
+         * @note Requires that startRun() is called at least once before.
+         * @return The index of the ant that found the best path.
+         */
+        virtual uint32_t stepAlgo() = 0;
+        
+        /**
+         * @brief Initializes the algorithm for a run.
+         */
+        virtual void startRun();
+
+        /**
+         * @brief Finilizes the run
+         */
+        virtual void stopRun(double best_path);
+        
         void printDebugInfo();
+        
+        
 
         /**
          * @brief Runs the algorithm num_runs times and reports the results.
@@ -44,9 +70,13 @@ class Algorithm{
         void runBatch(uint32_t num_runs);
         
         /**
-         * @brief Run a debug session with extra reporting and visualization.
+         * @brief Run a debug run with extra reporting and visualization.
+         * @param runs The number of iterations to do.
          */
-        void debugRun();
+        void debugRun(uint32_t iterations);
 
         virtual ~Algorithm() {};
+    
+    private:
+        Visualizer visualizer;
 };

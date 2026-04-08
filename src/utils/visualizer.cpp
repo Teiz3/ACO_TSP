@@ -29,7 +29,7 @@ void Visualizer::visualizeProblem(ProblemInstance &problem){
     }
 }
 
-void Visualizer::visualizeTour(const vector<int>& tour, ProblemInstance &problem) {
+void Visualizer::visualizeTour(const vector<int>& tour, ProblemInstance &problem, sf::Color color, double alpha) {
     Bounds bounds = computeBounds(problem.coords_);
     
     for (size_t i = 0; i < tour.size(); ++i) {
@@ -39,9 +39,11 @@ void Visualizer::visualizeTour(const vector<int>& tour, ProblemInstance &problem
         auto p1 = mapToScreen(problem.coords_[a], bounds);
         auto p2 = mapToScreen(problem.coords_[b], bounds);
 
+        color.a = std::min(255.0, 25 + (255 * alpha));
+
         sf::Vertex line[] = {
-            sf::Vertex(p1, sf::Color::Green),
-            sf::Vertex(p2, sf::Color::Green)
+            sf::Vertex(p1, color),
+            sf::Vertex(p2, color)
         };
 
         window.draw(line, 2, sf::Lines);

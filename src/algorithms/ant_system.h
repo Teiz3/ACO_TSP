@@ -8,7 +8,7 @@
 
 #pragma once
 
-class AntSystem : Algorithm{
+class AntSystem : public Algorithm{
     public:
         AntSystem(ProblemInstance &problem, Config &cfg, Stats &stats) : 
             Algorithm("Ant system", problem, cfg, stats){};
@@ -16,6 +16,5 @@ class AntSystem : Algorithm{
         // Run the algorithm and return the best found path value
         double runAlgo();
 
-        // Do a single iteration and return the best pathlength for that iteration
-        double stepAlgo();
+        uint32_t stepAlgo();
 };

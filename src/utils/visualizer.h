@@ -22,7 +22,8 @@ class Visualizer{
         window(sf::VideoMode(w, h), name) {};
         
         void visualizeProblem(ProblemInstance &problem);
-        void visualizeTour(const vector<int>& tour, ProblemInstance &problem);
+        void visualizeTour(const vector<int>& tour, ProblemInstance &problem, 
+            sf::Color color = sf::Color::Green, double alpha = 1);
         void keepWindowOpen();
         void display();
         void clear();
