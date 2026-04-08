@@ -20,8 +20,9 @@ class Stats{
 
         /**
          * @brief Start a new run tracker.
+         * @param algo_name The name of the algorithm that performs this run.
          */
-        void startRun();
+        void startRun(const char* algo_name);
         /**
          * @brief Stop tracking the current run and store the results.
          * @param path_length The best path length found in this run.
@@ -55,10 +56,16 @@ class Stats{
          */
         void printAlgoResults();
 
+        /**
+         * @brief Resets all stored statistics
+         */
+        void reset();
+
     private:
         int currentRun = -1;
         chrono::steady_clock::time_point batch_start;
         chrono::milliseconds batch_duration;
+        const char* algorithm_name;
         
         // Timings and iteration counts
         vector<uint32_t> iteration_counts = vector<uint32_t>();

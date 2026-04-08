@@ -2,8 +2,7 @@
 #include "meeting_ants.h"
 
 double MeetingAnts::runAlgo(){
-    stats.startRun();
-    pheromones.reset();
+    startRun();
     double bestPath = 1e20;
     uint8_t noChangeCount = 0;
 
@@ -20,11 +19,11 @@ double MeetingAnts::runAlgo(){
             noChangeCount++;
         }
     }
-    stats.stopRun(bestPath);
+    stopRun(bestPath);
     return bestPath;
 }
 
-double MeetingAnts::stepAlgo(){
+uint32_t MeetingAnts::stepAlgo(){
     // Spawn ants
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -49,21 +48,25 @@ double MeetingAnts::stepAlgo(){
     std::vector<std::vector<int>> mergedTours;
     bool stopEarly = false;
 
-    if(config.use_meeting_strategy){
+    if(cfg.use_meeting_strategy){
         mergedTours = meetingPhase();
         stats.logNrOfMerges(mergedTours.size());
-        if(mergedTours.size() >= config.meeting_threshold)
+        if(mergedTours.size() >= cfg.meeting_threshold)
             stopEarly = true;
     }
 
     double bestPath = 1e20;
+    uint32_t bestAntIdx = 0;
 
     // Complete tours unless meeting threshold reached
     if(!stopEarly){
         for(uint32_t i = 0; i < num_ants; ++i){
             if(ants[i].getVisitedCount() == problem.size_) continue;
             double path = ants[i].makePath(pheromones, problem);
-            bestPath = std::min(bestPath, path);
+            if(path < bestPath){
+                bestPath = path;
+                bestAntIdx = i;
+            }
         }
     }
 
@@ -84,10 +87,10 @@ double MeetingAnts::stepAlgo(){
     }
 
     // Bound if enabled
-    if(config.use_meeting_strategy)
+    if(cfg.use_meeting_strategy)
         pheromones.bound();
 
-    return bestPath;
+    return bestAntIdx;
 }
 
 std::vector<std::vector<int>> MeetingAnts::meetingPhase(){
@@ -150,7 +153,7 @@ std::vector<std::vector<int>> MeetingAnts::meetingPhase(){
                 used[i] = used[j] = true;
                 meetings++;
 
-                if(meetings >= config.meeting_threshold){
+                if(meetings >= cfg.meeting_threshold){
                     return mergedTours;
                 }
             }

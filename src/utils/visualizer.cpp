@@ -14,6 +14,7 @@ Bounds computeBounds(const vector<Point>& pts) {
 }
 
 void Visualizer::visualizeProblem(ProblemInstance &problem){
+    ensureWindow();
     // cout << "visualizing...\n";
 
     Bounds bounds = computeBounds(problem.coords_);
@@ -30,6 +31,7 @@ void Visualizer::visualizeProblem(ProblemInstance &problem){
 }
 
 void Visualizer::visualizeTour(const vector<int>& tour, ProblemInstance &problem, sf::Color color, double alpha) {
+    ensureWindow();
     Bounds bounds = computeBounds(problem.coords_);
     
     for (size_t i = 0; i < tour.size(); ++i) {
@@ -52,9 +54,11 @@ void Visualizer::visualizeTour(const vector<int>& tour, ProblemInstance &problem
 }
 
 void  Visualizer::display(){
+    ensureWindow();
     window.display();
 }
 void  Visualizer::clear(){
+    ensureWindow();
     window.clear();
 }
 

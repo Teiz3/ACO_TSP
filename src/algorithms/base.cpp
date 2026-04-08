@@ -31,12 +31,13 @@ void Algorithm::debugRun(uint32_t iterations){
         visualizer.display();
         // this_thread::sleep_for(chrono::milliseconds(50));
     }
+    cout << "\n";
     stopRun(path);
     visualizer.keepWindowOpen();
 }
 
 void Algorithm::startRun(){
-    stats.startRun();
+    stats.startRun(this->name);
     pheromones.reset();
 }
 

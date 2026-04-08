@@ -41,6 +41,11 @@ struct Config{
     const double beta;
     const double rho;
     const double Q;
+    // Meeting ant specific:
+    const bool use_meeting_strategy = true;
+    const int32_t meeting_threshold = 1;    // v 
+    const double pheromone_min = 0.00001;   // tmin
+    const double pheromone_max = 1e20;      // tmax
 };
 
 inline Config defaultConfig = {
@@ -53,19 +58,19 @@ inline Config defaultConfig = {
     default_Q,
 };
 
-struct MeetingConfig : public Config{
-    const bool use_meeting_strategy = false;
-    const int32_t meeting_threshold = 1;    // v 
-    const double pheromone_min = 0.00001;   // tmin
-    const double pheromone_max = 1e20;      // tmax
-};
+// struct MeetingConfig : public Config{
+//     const bool use_meeting_strategy = false;
+//     const int32_t meeting_threshold = 1;    // v 
+//     const double pheromone_min = 0.00001;   // tmin
+//     const double pheromone_max = 1e20;      // tmax
+// };
 
-inline MeetingConfig defaultMeetConfig = {
-    default_num_ants,
-    default_num_ants_equals_num_cities,
-    default_initial_pheromone,
-    default_alpha,
-    default_beta,
-    default_rho,
-    default_Q,
-};
+// inline MeetingConfig defaultMeetConfig = {
+//     default_num_ants,
+//     default_num_ants_equals_num_cities,
+//     default_initial_pheromone,
+//     default_alpha,
+//     default_beta,
+//     default_rho,
+//     default_Q,
+// };

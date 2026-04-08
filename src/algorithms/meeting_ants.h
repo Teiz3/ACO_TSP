@@ -14,36 +14,17 @@
 
 #pragma once
 
-class MeetingAnts{
+class MeetingAnts : public Algorithm{
     public:
-        MeetingAnts(ProblemInstance &problem, MeetingConfig &cfg, Stats &stats) : 
-            problem(problem),
-            pheromones(PheromoneMatrix(problem.size_, cfg.initial_pheromone, cfg.rho, cfg.Q)),
-            config(cfg),
-            ants(),
-            stats(stats){
-                num_ants = cfg.num_ants_equals_num_cities ? problem.size_ : cfg.num_ants;
-                ants.reserve(num_ants);
-                for (uint32_t i = 0; i < num_ants; ++i){
-                    ants.push_back(Ant(problem.size_, cfg.alpha, cfg.beta, cfg.Q));
-                }
-            };
+        MeetingAnts(ProblemInstance &problem, Config &cfg, Stats &stats) : 
+            Algorithm("Meeting ants", problem, cfg, stats){};
 
         // Run the algorithm and return the best found path value
         double runAlgo();
 
         // Do a single iteration and return the best pathlength for that iteration
-        double stepAlgo();
+        uint32_t stepAlgo();
 
         
         std::vector<std::vector<int>> meetingPhase();
-
-        void printDebugInfo();
-    private:
-        ProblemInstance problem;
-        PheromoneMatrix pheromones;
-        MeetingConfig config;
-        vector<Ant> ants;
-        uint32_t num_ants;
-        Stats &stats;
 };

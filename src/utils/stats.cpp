@@ -1,6 +1,7 @@
 #include "stats.h"
 
-void Stats::startRun(){
+void Stats::startRun(const char* algo_name){
+    algorithm_name = algo_name;
     if(currentRun == -1) batch_start = chrono::steady_clock::now();
     ++currentRun;
     iteration_counts.push_back(0);
@@ -72,7 +73,7 @@ void Stats::printAlgoResults(){
     double sumPath = accumulate(path_lengths.begin(), path_lengths.end(), 0);
     double avrPath = sumPath / num_runs;
     
-    cout << "\n\t\tBATCH INFO: " << problem.name_ << " (" << num_runs << " runs)\n";
+    cout << "\n  " <<  algorithm_name << " BATCH INFO: " << problem.name_ << " (" << num_runs << " runs)\n";
     cout << "================================================\n";
     cout << "  PATHS\n"
          << "Best:\t\t" << *minmaxPath.first << "\t(%): " << *minmaxPath.first / problem.optimal_path_length_
@@ -92,4 +93,11 @@ void Stats::printAlgoResults(){
         cout << num_merges.at(i) << " ";
     }
     cout << "\n";
+}
+
+void Stats::reset(){
+    currentRun = -1;
+    iteration_counts.clear();
+    path_lengths.clear();
+    num_merges.clear();
 }
