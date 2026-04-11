@@ -2,8 +2,10 @@
  * Parameters.h
  * Contains all the parameters used in the algorithm
  */
-#include <cstdint>
 #pragma once
+#include <cstdint>
+#include "utils/json.hpp"
+using json = nlohmann::json;
 
 // Number of ants
 // In paper called 'm'
@@ -58,19 +60,18 @@ inline Config defaultConfig = {
     default_Q,
 };
 
-// struct MeetingConfig : public Config{
-//     const bool use_meeting_strategy = false;
-//     const int32_t meeting_threshold = 1;    // v 
-//     const double pheromone_min = 0.00001;   // tmin
-//     const double pheromone_max = 1e20;      // tmax
-// };
-
-// inline MeetingConfig defaultMeetConfig = {
-//     default_num_ants,
-//     default_num_ants_equals_num_cities,
-//     default_initial_pheromone,
-//     default_alpha,
-//     default_beta,
-//     default_rho,
-//     default_Q,
-// };
+inline json to_json(const Config& c){
+    return json{
+        {"num_ants", c.num_ants},
+        {"num_ants_equals_num_cities", c.num_ants_equals_num_cities},
+        {"initial_pheromone", c.initial_pheromone},
+        {"alpha", c.alpha},
+        {"beta", c.beta},
+        {"rho", c.rho},
+        {"Q", c.Q},
+        {"use_meeting_strategy", c.use_meeting_strategy},
+        {"meeting_threshold", c.meeting_threshold},
+        {"pheromone_min", c.pheromone_min},
+        {"pheromone_max", c.pheromone_max}
+    };
+}

@@ -6,9 +6,17 @@
 #include <cstdint>
 #include <vector>
 #include <chrono>
+#include <format>
 #include <iostream>
+#include <fstream>
+#include <string>
 #include <assert.h>
 #include "../problem_instance.h"
+#include "../parameters.h"
+#include "utils.h"
+#include "json.hpp"
+using ordered_json = nlohmann::ordered_json;
+using json = nlohmann::json;
 
 #pragma once
 
@@ -16,7 +24,7 @@ using namespace std;
 
 class Stats{
     public:
-        Stats(ProblemInstance& problem) : problem(problem) {};
+        Stats(ProblemInstance& problem, Config& config) : problem(problem), config(config) {};
 
         /**
          * @brief Start a new run tracker.
@@ -61,6 +69,11 @@ class Stats{
          */
         void reset();
 
+        /**
+         * @brief exports all logs and stats to a json file.
+         */
+        void exportLog();
+
     private:
         int currentRun = -1;
         chrono::steady_clock::time_point batch_start;
@@ -80,4 +93,5 @@ class Stats{
 
         // Algorithm parameters and other metadata
         ProblemInstance &problem;
+        Config &config;
 };

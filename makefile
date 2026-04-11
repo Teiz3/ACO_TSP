@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS_COMMON = -std=c++17 -Wall -Wpedantic -Wextra -fexceptions -fopenmp
+CXXFLAGS_COMMON = -std=c++20 -Wall -Wpedantic -Wextra -fexceptions -fopenmp
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 # Change to debug to compile with debugging flags

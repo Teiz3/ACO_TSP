@@ -36,6 +36,14 @@ void Algorithm::debugRun(uint32_t iterations){
     visualizer.keepWindowOpen();
 }
 
+void Algorithm::runBatch(uint32_t num_runs){
+      for(uint32_t i = 0; i < num_runs; ++i){
+        runAlgo(); 
+        cout << "\r" << "Run " << i << "/" << num_runs << flush;
+    }
+    cout << "\n";
+}
+
 void Algorithm::startRun(){
     stats.startRun(this->name);
     pheromones.reset();

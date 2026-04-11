@@ -5,6 +5,10 @@
 #pragma once
 
 #include <cmath>
+#include <chrono>
+#include <iomanip>
+#include <sstream>
+#include "json.hpp"
 
 struct Vec2d {
     double x_;
@@ -24,3 +28,20 @@ struct Vec2d {
 
     [[nodiscard]] double length_squared() const { return x_ * x_ + y_ * y_; }
 };
+
+inline std::string to_string(std::chrono::system_clock::time_point tp)
+{
+    auto t = std::chrono::system_clock::to_time_t(tp);
+    std::tm tm{};
+    localtime_r(&t, &tm);
+
+    std::ostringstream ss;
+    ss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
+    return ss.str();
+}
+
+template <class Rep, class Period>
+double to_seconds(std::chrono::duration<Rep, Period> d)
+{
+    return std::chrono::duration<double>(d).count();
+}

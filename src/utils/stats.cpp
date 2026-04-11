@@ -101,3 +101,36 @@ void Stats::reset(){
     path_lengths.clear();
     num_merges.clear();
 }
+
+void Stats::exportLog(){
+    ordered_json j;
+    auto now = std::chrono::system_clock::now();
+    auto now_sec = std::chrono::time_point_cast<std::chrono::seconds>(now);
+
+    j["problem"] = problem.name_;
+    j["algorithm"] = algorithm_name;
+    j["timings"] = json{
+        {"date", to_string(now)},
+        {"runtime_sec", to_seconds(batch_duration)}
+    };
+    j["config"] = to_json(config);
+    j["solution"] = problem.optimal_path_length_;
+    j["results"] = json{
+        {"iteration_counts", iteration_counts},
+        {"path_lengths", path_lengths},
+        {"num_merges", num_merges}
+    };
+
+    std::string filename = std::format(
+    "results/{}-{}-{:%Y-%m-%d-%H-%M-%S}.json",
+    algorithm_name,
+    problem.name_,
+    now_sec
+    );
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        throw std::runtime_error("Could not open file");
+    }
+
+    file << j.dump(2);
+}
