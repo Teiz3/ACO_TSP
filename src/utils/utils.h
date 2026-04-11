@@ -33,8 +33,11 @@ inline std::string to_string(std::chrono::system_clock::time_point tp)
 {
     auto t = std::chrono::system_clock::to_time_t(tp);
     std::tm tm{};
-    localtime_r(&t, &tm);
-
+#ifdef _WIN32
+    localtime_s(&tm, &t);   // Windows
+#else
+    localtime_r(&t, &tm);   // POSIX
+#endif
     std::ostringstream ss;
     ss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
     return ss.str();
