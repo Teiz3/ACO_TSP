@@ -5,10 +5,17 @@ SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 # Change to debug to compile with debugging flags
 MODE = debug
 
-ifeq ($(MODE),release)
-	CXXFLAGS = $(CXXFLAGS_COMMON) $(SFMLFLAGS) -O3 -march=native -flto -mavx2 -DNDEBUG
+# Detect Windows
+ifeq ($(OS),Windows_NT)
+    PLATFORM_FLAGS =
 else
-	CXXFLAGS = $(CXXFLAGS_COMMON) $(SFMLFLAGS) -g
+    PLATFORM_FLAGS = $(SFMLFLAGS)
+endif
+
+ifeq ($(MODE),release)
+	CXXFLAGS = $(CXXFLAGS_COMMON) $(PLATFORM_FLAGS) -O3 -march=native -flto -mavx2 -DNDEBUG
+else
+	CXXFLAGS = $(CXXFLAGS_COMMON) $(PLATFORM_FLAGS) -g
 endif
 
 CXXFLAGS += -MMD -MP
