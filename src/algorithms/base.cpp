@@ -11,10 +11,11 @@ void Algorithm::printDebugInfo(){
     cout << "================================================\n\n";
 }
 
+#ifndef _WIN32
 void Algorithm::debugRun(uint32_t iterations){
     startRun();
     double path;
-    for(int i = 0; i < iterations; ++i){
+    for(uint32_t i = 0; i < iterations; ++i){
         cout << "\r" << "Iteration " << i << "/" << iterations << flush;
 
         visualizer.clear();
@@ -24,7 +25,7 @@ void Algorithm::debugRun(uint32_t iterations){
         uint32_t idx = stepAlgo();
         path = ants[idx].getTourLength();
         double a = 1 / num_ants;
-        for(int j = 0; j < num_ants; ++j){
+        for(size_t j = 0; j < num_ants; ++j){
             visualizer.visualizeTour(ants[j].getTour(), problem, sf::Color::Green, a);
         }
         visualizer.visualizeTour(ants[idx].getTour(), problem, sf::Color::Red);
@@ -35,6 +36,7 @@ void Algorithm::debugRun(uint32_t iterations){
     stopRun(path);
     visualizer.keepWindowOpen();
 }
+#endif
 
 void Algorithm::runBatch(uint32_t num_runs){
       for(uint32_t i = 0; i < num_runs; ++i){
@@ -42,6 +44,8 @@ void Algorithm::runBatch(uint32_t num_runs){
         cout << "\r" << "Run " << i << "/" << num_runs << flush;
     }
     cout << "\n";
+    cout << "Saving batch to json\n";
+    stats.exportLog();
 }
 
 void Algorithm::startRun(){

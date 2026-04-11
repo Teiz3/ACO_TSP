@@ -1,14 +1,9 @@
 #include "problem_instance.h"
 #include "parameters.h"
-#include "pheromone.h"
-#include "ant.h"
 #include "algorithms/ant_system.h"
 #include "algorithms/meeting_ants.h"
-#include "utils/visualizer.h"
 #include "utils/stats.h"
 #include <iostream>
-#include <random>
-#include <fstream>
 #include <chrono>
 #include <thread>
 
@@ -27,10 +22,10 @@ int main() {
     // int runs = 100;
     // AS.debugRun(100);
     AS.runBatch(100);
-    stats.printAlgoResults();
-    stats.exportLog();
-    stats.reset();
-    MA.debugRun(100);
+    // stats.printAlgoResults();
+    // stats.reset();
+    // MA.debugRun(100);
+    // MA.runBatch(2);
     stats.printAlgoResults();
     return 0;
 }

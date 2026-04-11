@@ -7,7 +7,9 @@
 #include "../parameters.h"
 #include "../ant.h"
 #include "../utils/stats.h"
+#ifndef _WIN32
 #include "../utils/visualizer.h"
+#endif
 #include <vector>
 #include <thread>
 
@@ -28,8 +30,12 @@ class Algorithm{
             pheromones(PheromoneMatrix(problem.size_, cfg.initial_pheromone, cfg.rho, cfg.Q)),
             cfg(cfg),
             ants(),
-            stats(stats),
-            visualizer(Visualizer(1280, 720, name)) {
+            stats(stats)
+#ifndef _WIN32
+            ,visualizer(Visualizer(1280, 720, name)) 
+#endif
+            
+            {
                 num_ants = cfg.num_ants_equals_num_cities ? problem.size_ : cfg.num_ants;
                 ants.reserve(num_ants);
                 for(size_t i = 0; i < num_ants; ++i){
@@ -68,15 +74,17 @@ class Algorithm{
          * @brief Runs the algorithm num_runs times and reports the results.
          */
         void runBatch(uint32_t num_runs);
-        
+            
+        virtual ~Algorithm() {};
+
+#ifndef _WIN32
         /**
          * @brief Run a debug run with extra reporting and visualization.
          * @param runs The number of iterations to do.
          */
         void debugRun(uint32_t iterations);
 
-        virtual ~Algorithm() {};
-    
     private:
         Visualizer visualizer;
+#endif
 };

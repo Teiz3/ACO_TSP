@@ -1,3 +1,4 @@
+#ifndef _WIN32
 #include "visualizer.h"
 
 using namespace std;
@@ -79,4 +80,4 @@ sf::Vector2f Visualizer::mapToScreen(Point p, Bounds b){
     float y = (p.y_ - b.minY) / (b.maxY - b.minY) * height;
     return {x, y};
 }
-
+#endif

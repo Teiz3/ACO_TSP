@@ -1,3 +1,4 @@
+#ifndef _WIN32
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cstdint>
@@ -41,6 +42,6 @@ class Visualizer{
         sf::RenderWindow window;
         sf::Vector2f mapToScreen(Point p, Bounds b);
 };
-
+#endif
 
 
