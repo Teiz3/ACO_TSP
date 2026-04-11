@@ -26,5 +26,5 @@ class MeetingAnts : public Algorithm{
         uint32_t stepAlgo();
 
         
-        std::vector<std::vector<int>> meetingPhase();
+        std::vector<std::pair<uint32_t, std::vector<int>>> meetingPhase();
 };

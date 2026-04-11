@@ -3,7 +3,7 @@ CXXFLAGS_COMMON = -std=c++20 -Wall -Wpedantic -Wextra -fexceptions -fopenmp
 SFMLFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 # Change to debug to compile with debugging flags
-MODE = debug
+MODE = release
 
 # Detect Windows
 ifeq ($(OS),Windows_NT)

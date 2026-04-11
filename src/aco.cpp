@@ -21,7 +21,7 @@ int main() {
     // AS.printDebugInfo();
     // int runs = 100;
     // AS.debugRun(100);
-    AS.runBatch(100);
+    MA.runBatch(100);
     // stats.printAlgoResults();
     // stats.reset();
     // MA.debugRun(100);

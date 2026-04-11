@@ -45,7 +45,7 @@ uint32_t MeetingAnts::stepAlgo(){
     }
 
     // Meeting strat
-    std::vector<std::vector<int>> mergedTours;
+    std::vector<std::pair<uint32_t, std::vector<int>>> mergedTours;
     bool stopEarly = false;
 
     if(cfg.use_meeting_strategy){
@@ -71,10 +71,14 @@ uint32_t MeetingAnts::stepAlgo(){
     }
 
     // Eval merged tours
-    for(auto &tour : mergedTours){ 
-        double len = ants[0].computeTourLength(tour, problem); // TODO: Merge tour should alrdy be in ant
-        bestPath = std::min(bestPath, len);
+    for (auto &[idx, tour] : mergedTours) {
+        double len = ants[idx].tourLength;
+        if (len < bestPath) {
+            bestPath = len;
+            bestAntIdx = idx;  
+        }
     }
+
 
     // Pheromone update
     pheromones.evaporate();
@@ -93,8 +97,8 @@ uint32_t MeetingAnts::stepAlgo(){
     return bestAntIdx;
 }
 
-std::vector<std::vector<int>> MeetingAnts::meetingPhase(){
-    std::vector<std::vector<int>> mergedTours;
+std::vector<std::pair<uint32_t, std::vector<int>>> MeetingAnts::meetingPhase(){
+    std::vector<std::pair<uint32_t, std::vector<int>>> mergedTours;
     uint32_t n = problem.size_;
     uint32_t meetings = 0;
 
@@ -139,7 +143,7 @@ std::vector<std::vector<int>> MeetingAnts::meetingPhase(){
             }
 
             if(merged.size() == n){
-                mergedTours.push_back(merged);
+                mergedTours.push_back(std::make_pair(i, merged));
 
                 // Overwrite ant with merged tour
                 ants[i].tour = merged;
