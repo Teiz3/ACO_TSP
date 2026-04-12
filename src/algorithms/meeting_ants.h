@@ -16,8 +16,8 @@
 
 class MeetingAnts : public Algorithm{
     public:
-        MeetingAnts(ProblemInstance &problem, Config &cfg, Stats &stats) : 
-            Algorithm("Meeting ants", problem, cfg, stats){};
+        MeetingAnts(ProblemInstance &problem, Config &cfg, Stats &stats, Terminator *term) : 
+            Algorithm("Meeting ants", problem, cfg, stats, term){};
 
         // Run the algorithm and return the best found path value
         double runAlgo();

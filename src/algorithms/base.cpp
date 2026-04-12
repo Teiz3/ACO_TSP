@@ -40,8 +40,8 @@ void Algorithm::debugRun(uint32_t iterations){
 
 void Algorithm::runBatch(uint32_t num_runs){
       for(uint32_t i = 0; i < num_runs; ++i){
-        runAlgo(); 
         cout << "\r" << "Run " << i << "/" << num_runs << flush;
+        runAlgo(); 
     }
     cout << "\n";
     cout << "Saving batch to json\n";
@@ -49,10 +49,11 @@ void Algorithm::runBatch(uint32_t num_runs){
 }
 
 void Algorithm::startRun(){
-    stats.startRun(this->name);
+    stats.startRun(this);
     pheromones.reset();
 }
 
 void Algorithm::stopRun(double best_path){
     stats.stopRun(best_path);
+    term->resetTerminator();
 }

@@ -15,17 +15,20 @@ int main() {
     // ProblemInstance problem = load_tsplib_instance("problems/fri26.tsp");
    
     Stats stats = Stats(problem, defaultConfig);
+    MaxTerminator MaxTerm = MaxTerminator(2000);
+    NoChangeTerminator NCTerm = NoChangeTerminator(100, 2000);
 
-    AntSystem AS = AntSystem(problem, defaultConfig, stats);
-    MeetingAnts MA = MeetingAnts(problem, defaultConfig, stats);
+    AntSystem AS1 = AntSystem(problem, defaultConfig, stats, &MaxTerm);
+    AntSystem AS2 = AntSystem(problem, defaultConfig, stats, &NCTerm);
+    // MeetingAnts MA = MeetingAnts(problem, defaultConfig, stats);
     // AS.printDebugInfo();
     // int runs = 100;
     // AS.debugRun(100);
-    MA.runBatch(100);
+
+    // AS1.runBatch(100);
     // stats.printAlgoResults();
     // stats.reset();
-    // MA.debugRun(100);
-    // MA.runBatch(2);
+    AS2.runBatch(10);
     stats.printAlgoResults();
     return 0;
 }

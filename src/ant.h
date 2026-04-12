@@ -44,6 +44,6 @@ class Ant {
         int numCities;
         double alpha;
         double beta;
-        double Q;
         int startCity;
+        double Q;
 };

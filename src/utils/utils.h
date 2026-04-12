@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <sstream>
 #include "json.hpp"
+using json = nlohmann::json;
 
 struct Vec2d {
     double x_;
@@ -48,3 +49,73 @@ double to_seconds(std::chrono::duration<Rep, Period> d)
 {
     return std::chrono::duration<double>(d).count();
 }
+
+inline double round_to(double value, double precision = 1.0)
+{
+    return std::round(value / precision) * precision;
+}
+
+class Terminator {
+    public: 
+        virtual bool canContinue(double pathLen) = 0;
+        inline void resetTerminator(){ bestPath = 1e300; i = 0; };
+        virtual json to_json() = 0;
+        const char* name;
+        virtual ~Terminator() {};
+    protected:
+        double bestPath = 1e300;
+        uint32_t i = 0;
+};
+
+class MaxTerminator : public Terminator{
+    public:
+        MaxTerminator(uint32_t maxIter) : maxIter(maxIter) {
+            name = "Max iteration terminator";
+        };
+
+        inline virtual bool canContinue(double pathLen){
+            bestPath = pathLen;
+            return i++ < maxIter;
+        }
+
+        inline virtual json to_json(){
+            return json{
+                {"name", name},
+                {"maxIter", maxIter}
+            };
+        }
+    private:
+        uint32_t maxIter;
+};
+
+class NoChangeTerminator : public Terminator{
+    public:
+        NoChangeTerminator(uint32_t noChangeCount, uint32_t maxIter) : 
+            noChangeCount(noChangeCount), maxIter(maxIter) {
+            name = "No change terminator";
+
+            };
+
+        inline virtual bool canContinue(double pathLen){
+            if (pathLen < bestPath){
+                bestPath = pathLen;
+                nrOfChanges = 0;
+            }else{
+                nrOfChanges++;
+            }
+            return (nrOfChanges < noChangeCount) && (i++ < maxIter);
+        }
+
+        inline virtual json to_json(){
+            return json{
+                {"name", name},
+                {"maxIter", maxIter},
+                {"noChangeCount", noChangeCount}
+            };
+        }
+
+    private:
+        uint32_t noChangeCount;
+        uint32_t maxIter;
+        uint32_t nrOfChanges = 0;
+};

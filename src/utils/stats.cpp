@@ -1,7 +1,8 @@
 #include "stats.h"
+#include "../algorithms/base.h"
 
-void Stats::startRun(const char* algo_name){
-    algorithm_name = algo_name;
+void Stats::startRun(Algorithm* algo){
+    this->algo = algo;
     if(currentRun == -1) batch_start = chrono::steady_clock::now();
     ++currentRun;
     iteration_counts.push_back(0);
@@ -61,32 +62,22 @@ void Stats::printAlgoResults(){
     assert(currentRun >= 0);
     
     uint32_t num_runs = currentRun + 1;
-
-    auto minmaxIt = minmax_element(iteration_counts.begin(), iteration_counts.end());
-    uint32_t sumIt = accumulate(iteration_counts.begin(), iteration_counts.end(), 0);
-    float avrIt = sumIt / num_runs;
+    BatchStats batch = computeStats();
     
-    chrono::milliseconds sumT = accumulate(run_times.begin(), run_times.end(), chrono::milliseconds(0));
-    float avrT = (sumT.count() / num_runs); // Convert to seconds
-
-    auto minmaxPath = minmax_element(path_lengths.begin(), path_lengths.end());
-    double sumPath = accumulate(path_lengths.begin(), path_lengths.end(), 0);
-    double avrPath = sumPath / num_runs;
-    
-    cout << "\n  " <<  algorithm_name << " BATCH INFO: " << problem.name_ << " (" << num_runs << " runs)\n";
+    cout << "\n  " <<  algo->name << " BATCH INFO: " << problem.name_ << " (" << num_runs << " runs)\n";
     cout << "================================================\n";
     cout << "  PATHS\n"
-         << "Best:\t\t" << *minmaxPath.first << "\t(%): " << *minmaxPath.first / problem.optimal_path_length_
-         << "\nWorst:\t\t" << *minmaxPath.second << "\t(%): " << *minmaxPath.second / problem.optimal_path_length_
-         << "\nAverage:\t" << avrPath << "\t(%): " << avrPath / problem.optimal_path_length_ << "\n";
+         << "Best:\t\t" << batch.minPath << "\t(%): " << batch.minPath / problem.optimal_path_length_
+         << "\nWorst:\t\t" << batch.maxPath << "\t(%): " << batch.maxPath / problem.optimal_path_length_
+         << "\nAverage:\t" << batch.avgPath << "\t(%): " << batch.avgPath / problem.optimal_path_length_ << "\n";
              
     cout << "  ITERATIONS\n";
-    cout << "Best:\t\t" << *minmaxIt.first 
-         << "\nWorst:\t\t" << *minmaxIt.second
-         << "\nAverage\t\t" << avrIt << "\n";
+    cout << "Best:\t\t" << batch.minIterations 
+         << "\nWorst:\t\t" << batch.maxIterations
+         << "\nAverage\t\t" << batch.avgIterations << "\n";
     
     cout << "\nRuntime: " << (batch_duration.count() / 1000.0) << "[s]\n";
-    cout << "Average runtime per run: " << avrT << "[ms]\n";
+    cout << "Average runtime per run: " << batch.avgTime << "[ms]\n";
 
     cout << "Number of merges each run:\n";
     for(int i = 0; i < currentRun; ++i){
@@ -106,24 +97,32 @@ void Stats::exportLog(){
     ordered_json j;
     auto now = std::chrono::system_clock::now();
     auto now_sec = std::chrono::time_point_cast<std::chrono::seconds>(now);
+    BatchStats batch = computeStats();
 
     j["problem"] = problem.name_;
-    j["algorithm"] = algorithm_name;
+    j["algorithm"] = algo->name;
     j["timings"] = json{
         {"date", to_string(now)},
         {"runtime_sec", to_seconds(batch_duration)}
     };
     j["config"] = to_json(config);
+    j["termination"] = algo->term->to_json();
     j["solution"] = problem.optimal_path_length_;
-    j["results"] = json{
-        {"iteration_counts", iteration_counts},
+    j["summary"] = json{
+        {"Best", batch.minPath},
+        {"Best percentage", round_to(batch.minPath / problem.optimal_path_length_, 0.0001)},
+        {"Average", batch.avgPath},
+        {"Average percentage", round_to(batch.avgPath / problem.optimal_path_length_, 0.0001)},
+    };
+    j["results"] = ordered_json{
         {"path_lengths", path_lengths},
+        {"iteration_counts", iteration_counts},
         {"num_merges", num_merges}
     };
 
     std::string filename = std::format(
     "results/{}-{}-{:%Y-%m-%d-%H-%M-%S}.json",
-    algorithm_name,
+    algo->name,
     problem.name_,
     now_sec
     );
@@ -133,4 +132,29 @@ void Stats::exportLog(){
     }
 
     file << j.dump(2);
+}
+
+BatchStats Stats::computeStats(){
+    BatchStats batch{};
+
+    uint32_t num_runs = currentRun + 1;
+
+    auto minmaxIt = minmax_element(iteration_counts.begin(), iteration_counts.end());
+    batch.minIterations = *minmaxIt.first;
+    batch.maxIterations = *minmaxIt.second;
+
+    uint32_t sumIt = accumulate(iteration_counts.begin(), iteration_counts.end(), 0);
+    batch.avgIterations = sumIt / num_runs;
+    
+
+    batch.totalTime = accumulate(run_times.begin(), run_times.end(), chrono::milliseconds(0)).count();
+    batch.avgTime = (batch.avgTime / num_runs); 
+
+    auto minmaxPath = minmax_element(path_lengths.begin(), path_lengths.end());
+    batch.minPath = *minmaxPath.first;
+    batch.maxPath = *minmaxPath.second;
+    
+    double sumPath = accumulate(path_lengths.begin(), path_lengths.end(), 0);
+    batch.avgPath = sumPath / num_runs;
+    return batch;
 }

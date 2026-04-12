@@ -15,7 +15,6 @@
 
 class Algorithm{
     protected:
-        const char* name; // Name of the algorithm
         ProblemInstance problem;
         PheromoneMatrix pheromones;
         Config cfg;
@@ -24,13 +23,14 @@ class Algorithm{
         Stats &stats;
 
     public:
-        Algorithm(const char* name, ProblemInstance &problem, Config &cfg, Stats &stats) : 
+        Algorithm(const char* name, ProblemInstance &problem, Config &cfg, Stats &stats, Terminator *term) : 
             name(name),
             problem(problem),
             pheromones(PheromoneMatrix(problem.size_, cfg.initial_pheromone, cfg.rho, cfg.Q)),
             cfg(cfg),
             ants(),
-            stats(stats)
+            stats(stats),
+            term(term)
 #ifndef _WIN32
             ,visualizer(Visualizer(1280, 720, name)) 
 #endif
@@ -43,6 +43,8 @@ class Algorithm{
                 }
             };
         
+        const char* name; // Name of the algorithm
+
         /**
          * @brief Runs a single full run of the algorithm.
          * @note This function calls startRun(), so it is not needed to call yourself.
@@ -76,6 +78,8 @@ class Algorithm{
         void runBatch(uint32_t num_runs);
             
         virtual ~Algorithm() {};
+        Terminator *term;
+
 
 #ifndef _WIN32
         /**
