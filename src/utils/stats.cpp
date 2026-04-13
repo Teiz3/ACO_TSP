@@ -148,7 +148,7 @@ BatchStats Stats::computeStats(){
     
 
     batch.totalTime = accumulate(run_times.begin(), run_times.end(), chrono::milliseconds(0)).count();
-    batch.avgTime = (batch.avgTime / num_runs); 
+    batch.avgTime = (batch.totalTime / num_runs); 
 
     auto minmaxPath = minmax_element(path_lengths.begin(), path_lengths.end());
     batch.minPath = *minmaxPath.first;
