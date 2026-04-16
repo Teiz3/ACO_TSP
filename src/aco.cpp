@@ -11,11 +11,14 @@
 
 // att48 optimal path length: 10628
 int main() {
-    // ProblemInstance problem = load_tsplib_instance("problems/att48.tsp");
-    ProblemInstance problem = load_tsplib_instance("problems/ch150.tsp");
+    ProblemInstance att48 = load_tsplib_instance("problems/att48.tsp");
+    ProblemInstance eil51 = load_tsplib_instance("problems/eil51.tsp");
+    ProblemInstance ch150 = load_tsplib_instance("problems/ch150.tsp");
+
+    ProblemInstance problem = eil51;
    
     Stats stats = Stats(problem, defaultConfig);
-    MaxTerminator MaxTerm = MaxTerminator(5000);
+    MaxTerminator MaxTerm = MaxTerminator(2000);
     NoChangeTerminator NCTerm = NoChangeTerminator(100, 2000);
     SmallChangeTerminator SCTerm = SmallChangeTerminator(2000);
 

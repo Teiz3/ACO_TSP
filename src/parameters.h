@@ -11,8 +11,8 @@ using json = nlohmann::json;
 // In paper called 'm'
 // Paper has default value: m=n
 // num_ants is only used if num_ants_equals_num_cities is false
-const uint32_t default_num_ants = 10;
-const bool default_num_ants_equals_num_cities = true;
+const uint32_t default_num_ants = 50;
+const bool default_num_ants_equals_num_cities = false;
 
 // Initial pheremone value
 // In paper called 'c' or tau_0

@@ -110,9 +110,11 @@ void Stats::exportLog(){
     j["solution"] = problem.optimal_path_length_;
     j["summary"] = json{
         {"Best", batch.minPath},
-        {"Best percentage", round_to(batch.minPath / problem.optimal_path_length_, 0.0001)},
+        {"Best PD", round_to(((batch.minPath - problem.optimal_path_length_) / problem.optimal_path_length_) * 100, 0.01)},
         {"Average", batch.avgPath},
-        {"Average percentage", round_to(batch.avgPath / problem.optimal_path_length_, 0.0001)},
+        {"Average PD", round_to(((batch.avgPath - problem.optimal_path_length_) / problem.optimal_path_length_) * 100, 0.01)},
+        {"Worst", batch.maxPath},
+        {"Worst PD", round_to(((batch.maxPath - problem.optimal_path_length_) / problem.optimal_path_length_) * 100, 0.01)},
     };
     j["results"] = ordered_json{
         {"path_lengths", path_lengths},
@@ -154,7 +156,7 @@ BatchStats Stats::computeStats(){
     batch.minPath = *minmaxPath.first;
     batch.maxPath = *minmaxPath.second;
     
-    double sumPath = accumulate(path_lengths.begin(), path_lengths.end(), 0);
+    double sumPath = accumulate(path_lengths.begin(), path_lengths.end(), 0.0);
     batch.avgPath = sumPath / num_runs;
     return batch;
 }
