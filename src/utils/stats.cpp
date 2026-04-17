@@ -89,6 +89,7 @@ void Stats::printAlgoResults(){
 void Stats::reset(){
     currentRun = -1;
     iteration_counts.clear();
+    run_times.clear();
     path_lengths.clear();
     num_merges.clear();
 }

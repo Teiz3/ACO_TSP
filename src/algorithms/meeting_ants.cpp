@@ -4,19 +4,14 @@
 double MeetingAnts::runAlgo(){
     startRun();
     double bestPath = 1e20;
-    uint8_t noChangeCount = 0;
+    double path = 1e100;
 
-    // while (noChangeCount < 10){
-    int i = 0;
-    while (i < 2000){
-        ++i;
+    while (term->canContinue(path)){
         stats.iterate();
-        double path = stepAlgo();
+        uint32_t idx = stepAlgo();
+        path = ants[idx].getTourLength();
         if (path < bestPath){
             bestPath = path;
-            noChangeCount = 0;
-        }else{
-            noChangeCount++;
         }
     }
     stopRun(bestPath);
@@ -33,7 +28,7 @@ uint32_t MeetingAnts::stepAlgo(){
         ants[i].startAt(distr(gen));
     }
 
-    uint32_t half = problem.size_ / 2;
+    uint32_t half = (problem.size_ / 2) + 1;
 
     // Tour until half the cities are visited
     for(uint32_t i = 0; i < num_ants; ++i){
