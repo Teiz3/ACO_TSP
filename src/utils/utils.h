@@ -96,6 +96,11 @@ class NoChangeTerminator : public Terminator{
 
             };
 
+        inline void resetTerminator(){
+            Terminator::resetTerminator();
+            nrOfChanges = 0;
+        }
+
         inline virtual bool canContinue(double pathLen){
             if (pathLen < bestPath){
                 bestPath = pathLen;
