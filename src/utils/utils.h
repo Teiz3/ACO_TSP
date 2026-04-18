@@ -91,7 +91,7 @@ class MaxTerminator : public Terminator{
 class NoChangeTerminator : public Terminator{
     public:
         NoChangeTerminator(uint32_t noChangeCount, uint32_t maxIter) : 
-            noChangeCount(noChangeCount), Terminator(maxIter) {
+            Terminator(maxIter), noChangeCount(noChangeCount) {
             name = "No change terminator";
 
             };
@@ -116,7 +116,6 @@ class NoChangeTerminator : public Terminator{
 
     private:
         uint32_t noChangeCount;
-        uint32_t maxIter;
         uint32_t nrOfChanges = 0;
 };
 
